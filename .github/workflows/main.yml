@@ -39,3 +39,4 @@ jobs:
             --stack-name northwind-api-stack \
             --capabilities CAPABILITY_IAM \
             --region ${{ secrets.AWS_REGION }}
+            --resolve-s3
