@@ -1,0 +1,5 @@
+Flask==2.3.3
+flask-restful
+marshmallow
+boto3==1.34.24
+awsgi==0.1.13

@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  NorthwindApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_handler.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+      Environment:
+        Variables:
+          NORTHWIND_TABLE: Northwind
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref NorthwindTable
+      Timeout: 10
+      Runtime: python3.9
+  NorthwindTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Northwind
+      PrimaryKey:
+        Name: PK
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+Outputs:
+  ApiUrl:
+    Description: "Invoke URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
